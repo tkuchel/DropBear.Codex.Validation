@@ -8,7 +8,7 @@
         <Title>DropBear Codex Validation Module</Title>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Authors>Terrence Kuchel (DropBear)</Authors>
-        <Description>Introduces a flexible validation framework within DropBear.Codex suite of libraries, allowing for the registration and application of custom validation strategies across different data types, supporting both synchronous and asynchronous validation flows.</Description>
+        <Description>A flexible and extensible validation framework designed for .NET applications, enabling both synchronous and asynchronous data validation with support for custom validation strategies.</Description>
         <Copyright>2024 Terrence Kuchel</Copyright>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageProjectUrl>https://github.com/tkuchel/DropBear.Codex.Validation</PackageProjectUrl>
