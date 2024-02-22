@@ -10,6 +10,7 @@
         <Authors>Terrence Kuchel (DropBear)</Authors>
         <Description>Introduces a flexible validation framework within DropBear.Codex suite of libraries, allowing for the registration and application of custom validation strategies across different data types, supporting both synchronous and asynchronous validation flows.</Description>
         <Copyright>2024 Terrence Kuchel</Copyright>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageProjectUrl>https://github.com/tkuchel/DropBear.Codex.Validation</PackageProjectUrl>
         <PackageLicenseUrl>https://www.gnu.org/licenses/lgpl-3.0.html#license-text</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/tkuchel/DropBear.Codex.Validation</RepositoryUrl>
@@ -19,6 +20,10 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>
