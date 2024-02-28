@@ -5,7 +5,7 @@
 /// of validation logic specific to that type.
 /// </summary>
 /// <typeparam name="T">The type of object this strategy is designed to validate.</typeparam>
-public interface IValidationStrategy<T>
+public interface IValidationStrategy<in T>
 {
     /// <summary>
     /// Validates an instance of <typeparamref name="T"/> according to the rules defined in the implementing class.

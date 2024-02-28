@@ -12,13 +12,17 @@
         <Copyright>2024 Terrence Kuchel</Copyright>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageProjectUrl>https://github.com/tkuchel/DropBear.Codex.Validation</PackageProjectUrl>
-        <PackageLicenseUrl>https://www.gnu.org/licenses/lgpl-3.0.html#license-text</PackageLicenseUrl>
+        <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/tkuchel/DropBear.Codex.Validation</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
     </PropertyGroup>
 
 
     <ItemGroup>
+        <PackageReference Include="Meziantou.DotNet.CodingStandard" Version="1.0.119">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
     </ItemGroup>
 

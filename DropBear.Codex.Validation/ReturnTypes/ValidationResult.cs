@@ -19,17 +19,19 @@ public class ValidationResult
     /// <summary>
     ///     Gets a value indicating whether the validation was successful.
     /// </summary>
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public bool IsValid { get; }
 
     /// <summary>
     ///     Gets the error message associated with a validation failure.
     /// </summary>
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public string ErrorMessage { get; }
 
     /// <summary>
     ///     Represents a successful validation result.
     /// </summary>
-    public static ValidationResult Success => new(true);
+    public static ValidationResult Success => new(isValid: true);
 
     /// <summary>
     ///     Creates a failure validation result with the specified error message.
@@ -38,6 +40,6 @@ public class ValidationResult
     /// <returns>A <see cref="ValidationResult" /> indicating the failure.</returns>
     public static ValidationResult Fail(string errorMessage)
     {
-        return new ValidationResult(false, errorMessage);
+        return new ValidationResult(isValid: false, errorMessage);
     }
 }

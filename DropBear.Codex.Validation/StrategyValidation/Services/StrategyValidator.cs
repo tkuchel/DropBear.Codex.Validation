@@ -18,10 +18,8 @@ public class StrategyValidator : IStrategyValidator
     /// <typeparam name="T">The type to which the validation strategy applies.</typeparam>
     /// <param name="strategy">The validation strategy to register.</param>
     /// <exception cref="ArgumentNullException">Thrown if the strategy is null.</exception>
-    public void RegisterStrategy<T>(IValidationStrategy<T> strategy)
-    {
-        _syncValidationStrategies[typeof(T)] = strategy ?? throw new ArgumentNullException(nameof(strategy), "Validation strategy cannot be null.");
-    }
+    public void RegisterStrategy<T>(IValidationStrategy<T> strategy) => _syncValidationStrategies[typeof(T)] =
+        strategy ?? throw new ArgumentNullException(nameof(strategy), "Validation strategy cannot be null.");
 
     /// <summary>
     ///     Registers an asynchronous validation strategy for a specific type.
@@ -29,10 +27,10 @@ public class StrategyValidator : IStrategyValidator
     /// <typeparam name="T">The type to which the asynchronous validation strategy applies.</typeparam>
     /// <param name="strategy">The asynchronous validation strategy to register.</param>
     /// <exception cref="ArgumentNullException">Thrown if the strategy is null.</exception>
-    public void RegisterAsyncStrategy<T>(IValidationStrategyAsync<T> strategy)
-    {
-        _asyncValidationStrategies[typeof(T)] = strategy ?? throw new ArgumentNullException(nameof(strategy), "Validation strategy cannot be null.");
-    }
+    public void RegisterAsyncStrategy<T>(IValidationStrategyAsync<T> strategy) =>
+        _asyncValidationStrategies[typeof(T)] = strategy ??
+                                                throw new ArgumentNullException(nameof(strategy),
+                                                    "Validation strategy cannot be null.");
 
     /// <summary>
     ///     Validates an object of a specific type using the registered validation strategy.
@@ -44,7 +42,7 @@ public class StrategyValidator : IStrategyValidator
     /// <exception cref="ArgumentNullException">Thrown if the context is null.</exception>
     public bool Validate<T>(T context)
     {
-        if (context == null) throw new ArgumentNullException(nameof(context), "Validation context cannot be null.");
+        if (context is null) throw new ArgumentNullException(nameof(context), "Validation context cannot be null.");
 
         if (_syncValidationStrategies.TryGetValue(typeof(T), out var strategy) &&
             strategy is IValidationStrategy<T> typedStrategy)
@@ -66,11 +64,11 @@ public class StrategyValidator : IStrategyValidator
     /// <exception cref="ArgumentNullException">Thrown if the context is null.</exception>
     public async Task<bool> ValidateAsync<T>(T context)
     {
-        if (context == null) throw new ArgumentNullException(nameof(context), "Validation context cannot be null.");
+        if (context is null) throw new ArgumentNullException(nameof(context), "Validation context cannot be null.");
 
         if (_asyncValidationStrategies.TryGetValue(typeof(T), out var strategy) &&
             strategy is IValidationStrategyAsync<T> typedStrategy)
-            return await typedStrategy.ValidateAsync(context);
+            return await typedStrategy.ValidateAsync(context).ConfigureAwait(false);
 
         throw new InvalidOperationException(
             $"No asynchronous validation strategy registered for type {typeof(T).Name}.");

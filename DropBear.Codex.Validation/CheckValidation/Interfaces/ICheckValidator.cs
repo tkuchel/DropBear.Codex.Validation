@@ -55,10 +55,10 @@ public interface ICheckValidator
     /// <summary>
     ///     Ensures the specified string is a valid URL.
     /// </summary>
-    /// <param name="url">The URL string to check.</param>
+    /// <param name="url">The URL Uri to check.</param>
     /// <param name="parameterName">The name of the parameter being checked.</param>
     /// <returns>A <see cref="ValidationResult" /> indicating if the check passes or fails.</returns>
-    ValidationResult IsUrl(string url, string parameterName);
+    ValidationResult IsUrl(Uri url, string parameterName);
 
     /// <summary>
     ///     Ensures the specified value is a valid enumeration value.

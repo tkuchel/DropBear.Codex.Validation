@@ -4,7 +4,7 @@
 /// Defines a contract for implementing asynchronous validation strategies for specific types.
 /// </summary>
 /// <typeparam name="T">The type of the object to validate.</typeparam>
-public interface IValidationStrategyAsync<T>
+public interface IValidationStrategyAsync<in T>
 {
     /// <summary>
     /// Asynchronously validates an instance of <typeparamref name="T"/>.
