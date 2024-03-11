@@ -1,4 +1,6 @@
-﻿namespace DropBear.Codex.Validation.StrategyValidation.Interfaces;
+﻿using DropBear.Codex.Validation.ReturnTypes;
+
+namespace DropBear.Codex.Validation.StrategyValidation.Interfaces;
 
 /// <summary>
 /// Defines a contract for implementing asynchronous validation strategies for specific types.
@@ -10,11 +12,6 @@ public interface IValidationStrategyAsync<in T>
     /// Asynchronously validates an instance of <typeparamref name="T"/>.
     /// </summary>
     /// <param name="context">The instance of <typeparamref name="T"/> to be validated.</param>
-    /// <returns>A task that represents the asynchronous validation operation. The task result is true if
-    /// the instance passes the validation logic defined in the implementation; otherwise, false.</returns>
-    /// <remarks>
-    /// This method is suitable for validation scenarios requiring IO-bound operations, such as network requests
-    /// or database calls, enabling asynchronous execution to improve application responsiveness.
-    /// </remarks>
-    Task<bool> ValidateAsync(T context);
+    /// <returns>A task that represents the asynchronous validation operation, yielding a <see cref="ValidationResult"/>.</returns>
+    Task<ValidationResult> ValidateAsync(T context);
 }
