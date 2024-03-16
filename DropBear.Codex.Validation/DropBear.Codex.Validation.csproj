@@ -16,7 +16,9 @@
         <RepositoryUrl>https://github.com/tkuchel/DropBear.Codex.Validation</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
     </PropertyGroup>
-
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Meziantou.DotNet.CodingStandard" Version="1.0.119">

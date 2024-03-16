@@ -20,8 +20,12 @@ public partial class CheckValidator : ICheckValidator
     ///     Ensures the specified value is not null.
     /// </summary>
     public ValidationResult NotNull<T>(T value, string parameterName) => value == null
-        ? ValidationResult.Fail($"{parameterName} cannot be null.")
-        : ValidationResult.Success;
+        ? ValidationResult.Fail(
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                { parameterName, $"{parameterName} cannot be null." }
+            })
+        : ValidationResult.Success();
 
     /// <summary>
     ///     Ensures the specified value is within a given range.
@@ -29,8 +33,12 @@ public partial class CheckValidator : ICheckValidator
     public ValidationResult IsInRange(int value, string parameterName, int min, int max)
     {
         if (value < min || value > max)
-            return ValidationResult.Fail($"The value of {parameterName} must be between {min} and {max}.");
-        return ValidationResult.Success;
+            return ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
+        return ValidationResult.Success();
     }
 
 
@@ -38,8 +46,12 @@ public partial class CheckValidator : ICheckValidator
     ///     Ensures the specified string is a valid email format.
     /// </summary>
     public ValidationResult IsEmail(string email, string parameterName) => !EmailRegex().IsMatch(email)
-        ? ValidationResult.Fail("Invalid email format.")
-        : ValidationResult.Success;
+        ? ValidationResult.Fail(
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                { parameterName, $"{parameterName} cannot be null." }
+            })
+        : ValidationResult.Success();
 
     // Example for complex validation
     /// <summary>
@@ -47,66 +59,106 @@ public partial class CheckValidator : ICheckValidator
     /// </summary>
     public ValidationResult IsNotNullOrWhitespace(string value, string parameterName) =>
         string.IsNullOrWhiteSpace(value)
-            ? ValidationResult.Fail("String cannot be null or whitespace.")
-            : ValidationResult.Success;
+            ? ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                })
+            : ValidationResult.Success();
 
     public ValidationResult IsNotNullOrEmpty<T>(IEnumerable<T>? collection, string parameterName)
     {
         if (collection is null || !collection.Any())
-            return ValidationResult.Fail($"{parameterName} cannot be null or empty.");
-        return ValidationResult.Success;
+            return ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
+        return ValidationResult.Success();
     }
 
     // Adapting IsUrl to return ValidationResult
     public ValidationResult IsUrl(Uri url, string parameterName) =>
         !Uri.TryCreate(url.ToString(), UriKind.Absolute, out _)
-            ? ValidationResult.Fail("Invalid URL format.")
-            : ValidationResult.Success;
+            ? ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                })
+            : ValidationResult.Success();
 
     // Adapting IsValidEnumValue<TEnum> to return ValidationResult
     public ValidationResult IsValidEnumValue<TEnum>(TEnum value, string parameterName) where TEnum : struct, Enum =>
         !Enum.IsDefined(typeof(TEnum), value)
-            ? ValidationResult.Fail("Invalid enum value.")
-            : ValidationResult.Success;
+            ? ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                })
+            : ValidationResult.Success();
 
     // Adapting IsGreaterThan to return ValidationResult
     public ValidationResult IsGreaterThan(int value, string parameterName, int minValue) =>
         value <= minValue
-            ? ValidationResult.Fail($"Value must be greater than {minValue}.")
-            : ValidationResult.Success;
+            ? ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                })
+            : ValidationResult.Success();
 
     // Adapting IsLessThan to return ValidationResult
     public ValidationResult IsLessThan(int value, string parameterName, int maxValue) =>
         value >= maxValue
-            ? ValidationResult.Fail($"Value must be less than {maxValue}.")
-            : ValidationResult.Success;
+            ? ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                })
+            : ValidationResult.Success();
 
     // Adapting IsAlphaNumeric to return ValidationResult
     public ValidationResult IsAlphaNumeric(string value, string parameterName) =>
         !AlphaNumericRegex().IsMatch(value)
-            ? ValidationResult.Fail("String must be alphanumeric.")
-            : ValidationResult.Success;
+            ? ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                })
+            : ValidationResult.Success();
 
     // Adapting IsAssignableTo to return ValidationResult
     public ValidationResult IsAssignableTo(Type? type, string parameterName, Type? baseType)
     {
         if (type == null || baseType == null || !baseType.IsAssignableFrom(type))
-            return ValidationResult.Fail($"The type {type?.FullName} must be assignable to {baseType?.FullName}.");
-        return ValidationResult.Success;
+            return ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
+        return ValidationResult.Success();
     }
 
     /// <summary>
     ///     Ensures the specified object is not null.
     /// </summary>
     public static ValidationResult NotNull(object? value, string parameterName) => value == null
-        ? ValidationResult.Fail($"{parameterName} cannot be null.")
-        : ValidationResult.Success;
+        ? ValidationResult.Fail(
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                { parameterName, $"{parameterName} cannot be null." }
+            })
+        : ValidationResult.Success();
 
     public static ValidationResult IsPasswordSecure(string password, string parameterName)
     {
         if (string.IsNullOrWhiteSpace(password) || !PasswordPatternRegex().IsMatch(password))
-            return ValidationResult.Fail($"{parameterName} does not meet security requirements.");
-        return ValidationResult.Success;
+            return ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
+        return ValidationResult.Success();
     }
 
     /// <summary>
@@ -115,13 +167,21 @@ public partial class CheckValidator : ICheckValidator
     public static ValidationResult DoFilesExist(string[]? filePaths, string parameterName)
     {
         if (filePaths is null || filePaths.Length is 0)
-            return ValidationResult.Fail($"{parameterName} cannot be null or empty.");
+            return ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
 
         foreach (var filePath in filePaths)
             if (!File.Exists(filePath))
-                return ValidationResult.Fail($"File not found: {filePath}");
+                return ValidationResult.Fail(
+                    new Dictionary<string, string>(StringComparer.Ordinal)
+                    {
+                        { parameterName, $"{parameterName} cannot be null." }
+                    });
 
-        return ValidationResult.Success;
+        return ValidationResult.Success();
     }
 
     /// <summary>
@@ -130,14 +190,22 @@ public partial class CheckValidator : ICheckValidator
     public static ValidationResult AreAnyFieldsNull<T>(T? obj, string parameterName) where T : class
     {
         if (obj is null)
-            return ValidationResult.Fail($"{parameterName} cannot be null.");
+            return ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
 
         var properties = typeof(T).GetProperties();
         foreach (var property in properties)
             if (property.GetValue(obj) == null)
-                return ValidationResult.Fail($"Field {property.Name} in {parameterName} cannot be null.");
+                return ValidationResult.Fail(
+                    new Dictionary<string, string>(StringComparer.Ordinal)
+                    {
+                        { parameterName, $"{parameterName} cannot be null." }
+                    });
 
-        return ValidationResult.Success;
+        return ValidationResult.Success();
     }
 
     /// <summary>
@@ -146,12 +214,20 @@ public partial class CheckValidator : ICheckValidator
     public static ValidationResult AreAllFieldsNull<T>(T? obj, string parameterName) where T : class
     {
         if (obj is null)
-            return ValidationResult.Fail($"{parameterName} cannot be null.");
+            return ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
 
         var properties = typeof(T).GetProperties();
         return properties.All(property => property.GetValue(obj) == null)
-            ? ValidationResult.Success
-            : ValidationResult.Fail($"Not all fields in {parameterName} are null.");
+            ? ValidationResult.Success()
+            : ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
     }
 
     /// <summary>
@@ -160,8 +236,12 @@ public partial class CheckValidator : ICheckValidator
     public static ValidationResult IsGuid(string value, string parameterName)
     {
         if (string.IsNullOrWhiteSpace(value) || !Guid.TryParse(value, out _))
-            return ValidationResult.Fail($"{parameterName} must be a valid GUID.");
-        return ValidationResult.Success;
+            return ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
+        return ValidationResult.Success();
     }
 
     /// <summary>
@@ -171,35 +251,59 @@ public partial class CheckValidator : ICheckValidator
     {
         if (string.IsNullOrWhiteSpace(value) ||
             !DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
-            return ValidationResult.Fail($"{parameterName} must be a valid date.");
-        return ValidationResult.Success;
+            return ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
+        return ValidationResult.Success();
     }
 
     /// <summary>
     ///     Ensures the specified integer value is positive.
     /// </summary>
     public static ValidationResult IsPositive(int value, string parameterName) => value > 0
-        ? ValidationResult.Success
-        : ValidationResult.Fail($"{parameterName} must be positive.");
+        ? ValidationResult.Success()
+        : ValidationResult.Fail(
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                { parameterName, $"{parameterName} cannot be null." }
+            });
 
     /// <summary>
     ///     Ensures the specified integer value is negative.
     /// </summary>
     public static ValidationResult IsNegative(int value, string parameterName) => value < 0
-        ? ValidationResult.Success
-        : ValidationResult.Fail($"{parameterName} must be negative.");
+        ? ValidationResult.Success()
+        : ValidationResult.Fail(
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                { parameterName, $"{parameterName} cannot be null." }
+            });
 
     /// <summary>
     ///     Ensures the specified boolean value is true.
     /// </summary>
     public static ValidationResult IsTrue(bool value, string parameterName) =>
-        value ? ValidationResult.Success : ValidationResult.Fail($"{parameterName} must be true.");
+        value
+            ? ValidationResult.Success()
+            : ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
 
     /// <summary>
     ///     Ensures the specified boolean value is false.
     /// </summary>
     public static ValidationResult IsFalse(bool value, string parameterName) =>
-        !value ? ValidationResult.Success : ValidationResult.Fail($"{parameterName} must be false.");
+        !value
+            ? ValidationResult.Success()
+            : ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
 
     /// <summary>
     ///     Ensures all fields in the provided object are either null or have their default value.
@@ -207,17 +311,25 @@ public partial class CheckValidator : ICheckValidator
     public static ValidationResult AreAllFieldsNullOrDefault<T>(T? obj, string parameterName) where T : class
     {
         if (obj is null)
-            return ValidationResult.Fail($"{parameterName} cannot be null.");
+            return ValidationResult.Fail(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { parameterName, $"{parameterName} cannot be null." }
+                });
 
         var properties = typeof(T).GetProperties();
         foreach (var property in properties)
         {
             var value = property.GetValue(obj);
             if (value is not null && !IsDefaultValue(property.PropertyType, value))
-                return ValidationResult.Fail($"Not all fields in {parameterName} are null or default.");
+                return ValidationResult.Fail(
+                    new Dictionary<string, string>(StringComparer.Ordinal)
+                    {
+                        { parameterName, $"{parameterName} cannot be null." }
+                    });
         }
 
-        return ValidationResult.Success;
+        return ValidationResult.Success();
     }
 
     /// <summary>
