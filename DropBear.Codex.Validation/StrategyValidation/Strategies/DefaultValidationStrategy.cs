@@ -1,6 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#region
+
+using System.ComponentModel.DataAnnotations;
 using DropBear.Codex.Validation.StrategyValidation.Interfaces;
 using ValidationResult = DropBear.Codex.Validation.ReturnTypes.ValidationResult;
+
+#endregion
 
 namespace DropBear.Codex.Validation.StrategyValidation.Strategies;
 
@@ -18,11 +22,15 @@ public class DefaultValidationStrategy<T> : IValidationStrategy<T>
 
         foreach (var property in properties)
         {
-            var attributes = property.GetCustomAttributes(typeof(ValidationAttribute), inherit: true);
+            var attributes = property.GetCustomAttributes(typeof(ValidationAttribute), true);
             foreach (ValidationAttribute attribute in attributes)
             {
                 var isValid = attribute.IsValid(property.GetValue(context));
-                if (isValid) continue;
+                if (isValid)
+                {
+                    continue;
+                }
+
                 var errorMessage = attribute.FormatErrorMessage(property.Name);
                 validationResult.AddError(property.Name, errorMessage);
             }

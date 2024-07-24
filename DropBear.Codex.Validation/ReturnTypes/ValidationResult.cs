@@ -22,19 +22,24 @@ public class ValidationResult
     public IEnumerable<(string Parameter, string ErrorMessage)> Errors => _errors.AsReadOnly();
 
     /// <summary>
-    /// Creates a new instance of ValidationResult. This method is internal and intended for use within the validation framework.
+    ///     Creates a new instance of ValidationResult. This method is internal and intended for use within the validation
+    ///     framework.
     /// </summary>
     /// <returns>A new instance of the ValidationResult class.</returns>
-    internal static ValidationResult New() => new();
-    
+    internal static ValidationResult New()
+    {
+        return new ValidationResult();
+    }
+
     /// <summary>
-    /// Creates a failure validation result with the specified errors.
+    ///     Creates a failure validation result with the specified errors.
     /// </summary>
     /// <param name="errors">A dictionary containing parameter names and their associated error messages.</param>
-    /// <returns>A <see cref="ValidationResult"/> indicating the failure, with detailed errors.</returns>
+    /// <returns>A <see cref="ValidationResult" /> indicating the failure, with detailed errors.</returns>
     /// <remarks>
-    /// This method allows for aggregating multiple validation errors, where each key in the dictionary represents a parameter name,
-    /// and the value is the corresponding error message.
+    ///     This method allows for aggregating multiple validation errors, where each key in the dictionary represents a
+    ///     parameter name,
+    ///     and the value is the corresponding error message.
     /// </remarks>
     public static ValidationResult Fail(Dictionary<string, string> errors)
     {
@@ -43,6 +48,7 @@ public class ValidationResult
         {
             result.AddError(error.Key, error.Value);
         }
+
         return result;
     }
 
@@ -55,10 +61,14 @@ public class ValidationResult
     public ValidationResult AddError(string parameter, string errorMessage)
     {
         if (string.IsNullOrWhiteSpace(parameter))
+        {
             throw new ArgumentException("Parameter name cannot be null or whitespace.", nameof(parameter));
+        }
 
         if (string.IsNullOrWhiteSpace(errorMessage))
+        {
             throw new ArgumentException("Error message cannot be null or whitespace.", nameof(errorMessage));
+        }
 
         _errors.Add((parameter, errorMessage));
         return this;
@@ -68,7 +78,10 @@ public class ValidationResult
     ///     Creates a successful validation result, indicating no errors were encountered.
     /// </summary>
     /// <returns>A <see cref="ValidationResult" /> indicating a successful validation.</returns>
-    public static ValidationResult Success() => new();
+    public static ValidationResult Success()
+    {
+        return new ValidationResult();
+    }
 
     /// <summary>
     ///     Determines whether an error associated with a specific parameter exists.
@@ -78,7 +91,9 @@ public class ValidationResult
     public bool HasErrorFor(string parameter)
     {
         if (string.IsNullOrWhiteSpace(parameter))
+        {
             throw new ArgumentException("Parameter name cannot be null or whitespace.", nameof(parameter));
+        }
 
         return _errors.Any(e => e.Parameter == parameter);
     }

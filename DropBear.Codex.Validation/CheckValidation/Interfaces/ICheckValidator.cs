@@ -1,4 +1,8 @@
-﻿using DropBear.Codex.Validation.ReturnTypes;
+﻿#region
+
+using DropBear.Codex.Validation.ReturnTypes;
+
+#endregion
 
 namespace DropBear.Codex.Validation.CheckValidation.Interfaces;
 

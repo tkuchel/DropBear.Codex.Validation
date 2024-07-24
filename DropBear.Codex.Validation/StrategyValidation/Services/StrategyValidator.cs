@@ -1,6 +1,10 @@
-﻿using DropBear.Codex.Validation.StrategyValidation.Interfaces;
+﻿#region
+
+using DropBear.Codex.Validation.StrategyValidation.Interfaces;
 using DropBear.Codex.Validation.StrategyValidation.Strategies;
 using ValidationResult = DropBear.Codex.Validation.ReturnTypes.ValidationResult;
+
+#endregion
 
 namespace DropBear.Codex.Validation.StrategyValidation.Services;
 
@@ -51,7 +55,10 @@ public class StrategyValidator : IStrategyValidator
     /// </returns>
     public ValidationResult Validate<T>(T context)
     {
-        if (context is null) throw new ArgumentNullException(nameof(context), "Validation context cannot be null.");
+        if (context is null)
+        {
+            throw new ArgumentNullException(nameof(context), "Validation context cannot be null.");
+        }
 
         var validationResult = ValidationResult.New();
         var defaultStrategy = new DefaultValidationStrategy<T>();
@@ -59,15 +66,23 @@ public class StrategyValidator : IStrategyValidator
 
         // Aggregate errors from the default validation result
         foreach (var error in defaultValidationResult.Errors)
+        {
             validationResult.AddError(error.Parameter, error.ErrorMessage);
+        }
 
         // If a custom strategy is registered, apply it and aggregate its errors as well
         if (!_syncValidationStrategies.TryGetValue(typeof(T), out var strategy) ||
-            strategy is not IValidationStrategy<T> typedStrategy) return validationResult;
+            strategy is not IValidationStrategy<T> typedStrategy)
+        {
+            return validationResult;
+        }
+
         {
             var customValidationResult = typedStrategy.Validate(context);
             foreach (var error in customValidationResult.Errors)
+            {
                 validationResult.AddError(error.Parameter, error.ErrorMessage);
+            }
         }
 
         return validationResult;
@@ -91,7 +106,10 @@ public class StrategyValidator : IStrategyValidator
     /// </exception>
     public async Task<ValidationResult> ValidateAsync<T>(T context)
     {
-        if (context is null) throw new ArgumentNullException(nameof(context), "Validation context cannot be null.");
+        if (context is null)
+        {
+            throw new ArgumentNullException(nameof(context), "Validation context cannot be null.");
+        }
 
         var validationResult = ValidationResult.New();
         var hasCustomStrategy = _asyncValidationStrategies.TryGetValue(typeof(T), out var strategy);
@@ -103,7 +121,9 @@ public class StrategyValidator : IStrategyValidator
         {
             var customValidationResult = await typedStrategy.ValidateAsync(context).ConfigureAwait(false);
             foreach (var error in customValidationResult.Errors)
+            {
                 validationResult.AddError(error.Parameter, error.ErrorMessage);
+            }
         }
 
         // Apply default strategy
@@ -112,7 +132,9 @@ public class StrategyValidator : IStrategyValidator
                 defaultStrategy
                     .Validate(context)).ConfigureAwait(false);
         foreach (var error in defaultValidationResult.Errors)
+        {
             validationResult.AddError(error.Parameter, error.ErrorMessage);
+        }
 
         return validationResult;
     }
